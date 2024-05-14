@@ -10,6 +10,11 @@ Time-keeper for distributed systems
 由於 TLS 對憑證時間敏感。
 ![image](https://github.com/YauHsien/timetron/assets/595388/ac60be8f-4d2e-416a-88aa-3431a9ca3681)
 
+## 檔案結構
+- 名稱：軟體類別
+- 第一層：通盤說明
+  - 第二層：實作語言與語言專屬的資源
+
 ## References
 - w32tm
 - NTP
