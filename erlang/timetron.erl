@@ -11,5 +11,7 @@ utc_time() ->
 
 
 net() ->
-    {ok, Rec} = inet:gethostbyname(?NTP_SERVER),
-    {Rec#hostent.h_name, Rec#hostent.h_addr_list}.
+    case inet:gethostbyname(?NTP_SERVER) of
+        {ok, Rec} -> {Rec#hostent.h_name, Rec#hostent.h_addr_list};
+        {error, Reason} -> {error, Reason}
+    end.

@@ -14,8 +14,13 @@ ntp_servers() ->
   %  "2.europe.pool.ntp.org" ].
 
 get_time() ->
-  Random_server = lists:nth(rand:uniform(length(ntp_servers())), ntp_servers()),
-  get_time(Random_server).
+    try
+        Random_server = lists:nth(rand:uniform(length(ntp_servers())), ntp_servers()),
+        get_time(Random_server)
+    catch
+        Class:Reason:Stacktrace ->
+            {Class, Reason, Stacktrace}
+    end.
 
 get_time(Host) ->
   Resp = ntp_request(Host, create_ntp_request()),

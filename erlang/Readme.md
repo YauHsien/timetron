@@ -30,6 +30,15 @@ $ cd src && erl
  {transmitTimestamp,1715768827.3995132},
  {clientReceiveTimestamp,1715768976.38},
  {offset,-148.980486869812}}
-5> halt().
+5> % when the host is disconnected from network
+   ntp:get_time().
+{error,{badmatch,{error,nxdomain}},
+      [{ntp,ntp_servers,0,[{file,"ntp.erl"},{line,10}]},
+       {ntp,get_time,0,[{file,"ntp.erl"},{line,18}]},
+       {erl_eval,do_apply,7,[{file,"erl_eval.erl"},{line,748}]},
+       {shell,exprs,7,[{file,"shell.erl"},{line,691}]},
+       {shell,eval_exprs,7,[{file,"shell.erl"},{line,647}]},
+       {shell,eval_loop,3,[{file,"shell.erl"},{line,632}]}]}
+6> halt().
 $
 ```
