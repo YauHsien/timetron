@@ -12,7 +12,7 @@ Time-keeper for distributed systems
   - 故若瀏覽器 HTTPS 順暢
   - 則時間正確
 - 能找到同儕節點 -> 能進行網路通訊
-  - 是否能進行網路通訊？
+  - 是否能找到 Time server ？
     - 能連通網路 -> 能找到 NTP server 取得時間
     - 故若能找到 NTP server
     - 則能連通網路。
@@ -20,7 +20,34 @@ Time-keeper for distributed systems
     - <strike>能連通網路 -> 能找到 NTP server 取得時間</strike>
     - 能連通網路，且網段有同儕節點 -> 能找到同儕節點 
     - 故若能<strike>找到 NTP server，且</strike>找到同儕節點
-    - 則能連通網路，且網段有同儕節點
+    - 則能連通網路
+    - 且網段有同儕節點
+- 系統有多節點，節點之間互相傳遞訊息；其中一種訊息為 LLU (Low-level update) ，包含時間校正資訊。
+- 演算法：
+  - 環境：節點與其他節點通訊互動，透過 LLU 由外來節點傳入訊息，並由節點向外傳出訊息。
+  - 動作者：本節點
+  - 結果：訊息將可能使節點重新配置時間。
+  - 輸入：無
+  - 輸出：無
+  - 傳出訊息的步驟：
+    1. 若找到 NTP server ：讀取 UTC 時間 t<sub>1</sub>。
+       1. 讀取本機 UTC 日期與時間 t<sub>2</sub> 。
+       1. 如果 t<sub>1</sub> 對 t<sub>2</sub> 有落差，則對本機節點傳送訊息 <pre>universal t<sub>1</sub></pre>
+       1. 對同儕節點傳遞 <pre>universal t<sub>1</sub></pre>
+    1. 若找不到 NTP server 但找得到同儕節點：
+       1. 讀取本機 UTC 日期與時間 t 。
+       1. 取得節點代號 n 。
+       1. 對同儕節點傳遞 `local t, n` 。
+  - 傳入訊息的步驟：
+    1. 若收到傳入訊息 `universal t`
+       1. 讀取本機 UTC 日期與時間 t<sub>1</sub> 。
+       1. 如果 t 對 t<sub>1</sub> 有落差，則對本機節點傳送訊息 <pre>universal t<sub>1</sub></pre>
+    1. 若收到傳入訊息 `local t, n`
+       1. 若找到 NTP server ：讀取 UTC 時間 t<sub>1</sub>。
+          1 . 如果 t 對 t<sub>1</sub> 有落差，則對本機節點傳送訊息 <pre>universal t<sub>1</sub></pre>
+          1. 對同儕節點 n 傳遞 <pre>universal t<sub>1</sub></pre>
+       1. 若找不到 NTP server 但找得到同儕節點：
+          - （空缺）
 
 ### Erlang UTC
 ```Erlang
