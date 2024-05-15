@@ -2,6 +2,19 @@
 Time-keeper for distributed systems
 
 ## 情況確認
+#### 規格
+- 是否能取得時間？
+- 能找到同儕節點 -> 能進行網路通訊
+  - 是否能進行網路通訊？
+    - 能連通網路 -> （表示） 能找到 NTP server 取得時間
+    - 故若能找到 NTP server
+    - 則能連通網路。
+  - 是否能找到同儕節點？
+    - <strike>能連通網路 -> 能找到 NTP server 取得時間</strike>
+    - 能連通網路，且網段有同儕節點 -> 能找到同儕節點 
+    - 故若能<strike>找到 NTP server，且</strike>找到同儕節點
+    - 則能連通網路，且網段有同儕節點
+
 ### Erlang UTC
 ```Erlang
     calendar:universal_time().
