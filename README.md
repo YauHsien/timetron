@@ -49,7 +49,7 @@ Time-keeper for distributed systems
        1. 若找不到 NTP server 但找得到同儕節點：
           - （空缺）
   - 特性：若二個同儕節點都無法取得 UTC 時間，則無法互相協助校正時間。
-  - 延伸問題：如何防堵外部蓄意傳入偽造的傳入訊息 `universal t` ？
+  - 延伸問題：如何防堵外部蓄意傳入偽造的訊息 `universal t` ？
 
 ### Erlang UTC
 ```Erlang
