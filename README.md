@@ -32,7 +32,7 @@ Time-keeper for distributed systems
   - 傳出訊息的步驟：
     1. 若找到 NTP server ：讀取 UTC 時間 t<sub>1</sub>。
        1. 讀取本機 UTC 日期與時間 t<sub>2</sub> 。
-       1. 如果 t<sub>1</sub> 對 t<sub>2</sub> 有落差，則對本機節點傳送訊息 <pre>universal t<sub>1</sub></pre>
+       1. 如果 t<sub>1</sub> 對 t<sub>2</sub> 有落差，則對本機業務單元傳送訊息 <pre>universal t<sub>1</sub></pre>
        1. 對同儕節點傳遞 <pre>universal t<sub>1</sub></pre>
     1. 若找不到 NTP server 但找得到同儕節點：
        1. 讀取本機 UTC 日期與時間 t 。
@@ -41,10 +41,10 @@ Time-keeper for distributed systems
   - 傳入訊息的步驟：
     1. 若收到傳入訊息 `universal t`
        1. 讀取本機 UTC 日期與時間 t<sub>1</sub> 。
-       1. 如果 t 對 t<sub>1</sub> 有落差，則對本機節點傳送訊息 <pre>universal t<sub>1</sub></pre>
+       1. 如果 t 對 t<sub>1</sub> 有落差，則對本機業務單元傳送訊息 <pre>universal t<sub>1</sub></pre>
     1. 若收到傳入訊息 `local t, n`
        1. 若找到 NTP server ：讀取 UTC 時間 t<sub>1</sub>。
-          1. 如果 t 對 t<sub>1</sub> 有落差，則對本機節點傳送訊息 <pre>universal t<sub>1</sub></pre>
+          1. 如果 t 對 t<sub>1</sub> 有落差，則對本機業務單元傳送訊息 <pre>universal t<sub>1</sub></pre>
           1. 對同儕節點 n 傳遞 <pre>universal t<sub>1</sub></pre>
        1. 若找不到 NTP server 但找得到同儕節點：
           - （空缺）
