@@ -4,7 +4,7 @@
 
 ```
 $ cd src && erl
-1> {c(timetron), c(ntp)}.
+1> {c(timetron), c(ntp), c(courier)}.
 {ok,timetron}
 2> timetron:utc_time().
 {{2024,5,15},{8,3,47}}
@@ -39,6 +39,15 @@ $ cd src && erl
        {shell,exprs,7,[{file,"shell.erl"},{line,691}]},
        {shell,eval_exprs,7,[{file,"shell.erl"},{line,647}]},
        {shell,eval_loop,3,[{file,"shell.erl"},{line,632}]}]}
+6> {ok,S} = gen_server:start(courier, [{timetron_config,5000}], []).
+{ok,<0,780,0>}
+%% . . . 接下來每隔 5 秒會發出並收到時間訊息
+6> {universal,{{2024,5,16},{12,16,14}}} received
+6> {universal,{{2024,5,16},{12,16,19}}} received
+6> {universal,{{2024,5,16},{12,16,44}}} received
+6> gen_server:stop(S), f(S).
+ok
+%% . . . 此時 5 秒計時器停止
 6> halt().
 $
 ```
