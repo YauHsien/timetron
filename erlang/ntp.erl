@@ -1,5 +1,5 @@
 -module(ntp).
--export([get_time/1, get_time/0]).
+-export([get_local_time/0, get_time/1, get_time/0]).
 
 -define(NTP_PORT,       123).                   % udp
 -define(SERVER_TIMEOUT, 5000).                  % ms
@@ -12,6 +12,13 @@ ntp_servers() ->
   %[ "0.europe.pool.ntp.org",
   %  "1.europe.pool.ntp.org",
   %  "2.europe.pool.ntp.org" ].
+
+
+get_local_time() ->
+    {NowMS, NowS, NowUS} = erlang:timestamp(),
+    NowTimestamp = NowMS * 1.0e6 + NowS + NowUS/1000,
+    NowTimestamp.
+    
 
 get_time() ->
     try
@@ -40,14 +47,14 @@ process_ntp_response(Ntp_response) ->
   {NowMS, NowS, NowUS} = erlang:timestamp(),
   NowTimestamp = NowMS * 1.0e6 + NowS + NowUS/1000,
   TransmitTimestamp = XmtI - ?EPOCH + binfrac(XmtF),
-  { {li, LI}, {vn, Version}, {mode, Mode}, {stratum, Stratum}, {poll, Poll}, {precision, Precision},
+  [ {li, LI}, {vn, Version}, {mode, Mode}, {stratum, Stratum}, {poll, Poll}, {precision, Precision},
     {rootDelay, RootDel}, {rootDispersion, RootDisp}, {referenceId, R1, R2, R3, R4},
     {referenceTimestamp, RtsI - ?EPOCH + binfrac(RtsF)},
     {originateTimestamp, OtsI - ?EPOCH + binfrac(OtsF)},
     {receiveTimestamp,   RcvI - ?EPOCH + binfrac(RcvF)},
     {transmitTimestamp,  TransmitTimestamp},
     {clientReceiveTimestamp, NowTimestamp},
-    {offset, TransmitTimestamp - NowTimestamp} }.
+    {offset, TransmitTimestamp - NowTimestamp} ].
 
 create_ntp_request() ->
   << 0:2, 4:3, 3:3,  0:(3*8 + 3*32 + 4*64) >>.

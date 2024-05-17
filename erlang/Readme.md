@@ -48,6 +48,14 @@ $ cd src && erl
 6> gen_server:stop(S), f(S).
 ok
 %% . . . 此時 5 秒計時器停止
-6> halt().
+7> {ok,C} = courier:get_courier(3000),
+   timer:apply_after(10000, gen_server, stop, [C]).
+{ok,<0.152.0>}
+8> {universal,1715952043.228} received
+8> {universal,1715951858.753} received
+8> {universal,1715952046.401} received
+8> f(C).
+ok
+9> halt().
 $
 ```
