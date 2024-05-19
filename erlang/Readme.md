@@ -59,3 +59,7 @@ ok
 9> halt().
 $
 ```
+
+## 流程
+
+![flow](flow.png)
